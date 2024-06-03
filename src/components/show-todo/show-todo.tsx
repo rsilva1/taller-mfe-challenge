@@ -1,6 +1,7 @@
 import { TodoStatus } from "@enums/todo-status.enum";
 import { ShowTodoProps } from "./show-todo.types";
 import './show-todo.css'
+import { EditTodoStatus } from "@components/edit-todo-status/edit-todo-status";
 
 const wrapperClass = (status: TodoStatus): string => {
   if (status === TodoStatus.Completed) {
@@ -14,8 +15,11 @@ const wrapperClass = (status: TodoStatus): string => {
 export const ShowTodo: React.FC<ShowTodoProps> = ({ todo }) => {
   const className = wrapperClass(todo.status);
   return (
-    <p className={className}>
-      { todo.description }
-    </p>
+    <div>
+      <EditTodoStatus todo={todo} />
+      <p className={className}>
+        { todo.description }
+      </p>
+    </div>
   )
 }

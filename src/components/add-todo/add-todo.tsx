@@ -13,6 +13,11 @@ export const AddTodo: React.FC<AddTodoProps> = ({
     setDescription(value);
   }
 
+  const handleAdd = () => {
+    onAdd(description)
+    setDescription('')
+  }
+
   const disabled = description.length == 0;
 
   return (
@@ -25,7 +30,7 @@ export const AddTodo: React.FC<AddTodoProps> = ({
       />
       <button
         disabled={disabled}
-        onClick={() => onAdd(description)}
+        onClick={handleAdd}
       >
         Add
       </button>
