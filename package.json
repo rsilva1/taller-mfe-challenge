@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "cd dist && ln -sf ./../src/index.html index.html && cd ../ && node esbuild.dev.mjs",
+    "symlink:index": "cd dist && ln -sf ./../src/index.html index.html && cd ../",
+    "dev": "node esbuild.dev.mjs",
     "build": "echo \"build command pending\"",
     "test": "vitest",
     "coverage": "vitest run --coverage"
