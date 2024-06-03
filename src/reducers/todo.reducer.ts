@@ -8,38 +8,59 @@ export enum ActionTypes {
   UpdateStatus = 'update-status',
 };
 
-type TodoState = Todo[];
+export type TodoState = Todo[];
 
-export type TodoActions = {
-  type: ActionTypes.Set,
-  payload: Todo[],
-} | {
+type ActionSet = {
+  type: ActionTypes.Set;
+  payload: Todo[];
+}
+
+type ActionAdd = {
   type: ActionTypes.Add,
   payload: Todo,
-} | {
-  type: ActionTypes.UpdateStatus,
-  payload: {
-    id: string,
-    status: TodoStatus,
-  }
 }
+
+type ActionUpdateStatus = {
+  type: ActionTypes.UpdateStatus;
+  payload: {
+    id: string;
+    status: TodoStatus;
+  };
+}
+
+export type TodoActions =
+  | ActionSet
+  | ActionAdd
+  | ActionUpdateStatus
 
 export const todosInitialState: TodoState = [];
 
 export const todoReducer: Reducer<TodoState, TodoActions> = (state, action) => {
   switch (action.type) {
     case ActionTypes.Set:
-      return action.payload;
+      return actionSet(state, action);
     case ActionTypes.Add:
-      return [...state, action.payload];
+      return actionAdd(state, action);
     case ActionTypes.UpdateStatus:
-      return [...state].map((todo) => {
-        if (todo.id === action.payload.id) {
-          return {...todo, status: action.payload.status};
-        }
-        return todo;
-      });
+      return actionUpdateStatus(state, action);
     default:
       throw new Error('Unexpected action type')
   }
+}
+
+export const actionSet = (state: TodoState, action: ActionSet): TodoState => {
+  return action.payload;
+}
+
+export const actionAdd = (state: TodoState, action: ActionAdd): TodoState => {
+  return [...state, action.payload];
+}
+
+export const actionUpdateStatus = (state: TodoState, action: ActionUpdateStatus): TodoState => {
+  return [...state].map((todo) => {
+    if (todo.id === action.payload.id) {
+      return {...todo, status: action.payload.status};
+    }
+    return todo;
+  });
 }
