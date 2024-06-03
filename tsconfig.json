@@ -1,31 +1,26 @@
 {
   "compilerOptions": {
-    /* Language and Environment */
-    "target": "es2016",
+    "types": ["vitest/globals"],
 
-    /* Modules */
-    "module": "commonjs",
+    "target": "es2016",
+    "jsx": "react-jsx",
+
+    "module": "es2022",
+    "moduleResolution": "nodenext",
+
     "baseUrl": "./src/",
     "paths": {
-      "@components/*": ["components/*"]
+      "@components/*": ["components/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@enums/*": ["enums/*"],
+      "@tests/*": ["../tests/*"]
     },
 
-    /* JavaScript Support */
-    // "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
-    // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
-    // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
-
-    /* Emit */
-
-    /* Interop Constraints */
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
-    /* Type Checking */
     "strict": true,
 
-    /* Completeness */
-    // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true
   }
 }
