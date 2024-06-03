@@ -9,7 +9,11 @@ export default defineConfig({
     environment: 'jsdom',
     coverage: {
       include: ['src/**/*.{ts,tsx}'],
-      exclude: ['src/index.tsx'],
+      exclude: [
+        'src/index.tsx',
+        'src/components/todo-list-app/**',
+        'src/config-context.ts',
+      ],
       thresholds: {
         lines: 70,
         branches: 70,

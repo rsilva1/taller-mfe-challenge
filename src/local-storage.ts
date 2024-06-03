@@ -10,17 +10,15 @@ export class TodosLocalStorage implements ITodosStorage {
 
   async load() {
     let items = [];
-    try {
-      const stored = localStorage.getItem(`${this.prefix}-state`)
-      if (!stored) {
-        throw new Error('Nothing in store');
-      }
-      items = JSON.parse(stored)
-      return items
-    } catch(err) {
-
-    } finally {
-      return items
+    const stored = localStorage.getItem(`${this.prefix}-state`)
+    if (!stored) {
+      throw new Error('Empty store')
     }
+    try {
+      items = JSON.parse(stored)
+    } catch(err) {
+      throw new Error('Failed to parse stored value')
+    }
+    return items
   }
 }
