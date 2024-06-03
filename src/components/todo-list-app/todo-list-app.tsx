@@ -1,7 +1,7 @@
 import { AddTodo } from "@components/add-todo/add-todo"
 import { ListTodo } from "@components/list-todo/list-todo"
 import { TodoListAppProps } from "./todo-list-app.types"
-import { useCallback, useEffect, useReducer, useRef } from "react"
+import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { ActionTypes, todoReducer, todosInitialState } from "reducers/todo.reducer"
 import { v4 as uuidv4 } from 'uuid';
 import { TodoStatus } from "@enums/todo-status.enum"
@@ -10,6 +10,7 @@ import { TodosStorage } from "storage"
 import { ConfigContext, defaultConfig } from "config-context"
 import { AppConfig } from "@interfaces/app-config.interface"
 import { Todo } from "@interfaces/todo.interface"
+import { Filter } from "@components/filter/filter"
 
 const validateConfig = (config: AppConfig) => {
   let errors = [];
@@ -22,6 +23,7 @@ const validateConfig = (config: AppConfig) => {
 export const TodoListApp: React.FC<TodoListAppProps> = ({ config }) => {
   const storageRef = useRef(new TodosStorage());
   const [todos, dispatch] = useReducer(todoReducer, todosInitialState);
+  const [filterBy, setFilterBy] = useState<TodoStatus|null>(null);
   const appConfig = {...defaultConfig, ...config};
 
   const storage = storageRef.current;
@@ -76,8 +78,9 @@ export const TodoListApp: React.FC<TodoListAppProps> = ({ config }) => {
     <ConfigContext.Provider value={{...defaultConfig, ...config}}>
       <TodosDispatcherContext.Provider value={dispatch}>
         <div>
+          <Filter filterBy={filterBy} setFilterBy={setFilterBy} />
           <AddTodo onAdd={onAdd} />
-          <ListTodo todos={todos} />
+          <ListTodo todos={todos} filterBy={filterBy} />
         </div>
       </TodosDispatcherContext.Provider>
     </ConfigContext.Provider>
