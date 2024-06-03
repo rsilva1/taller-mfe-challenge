@@ -27,3 +27,51 @@ Note: as not hosting this anywhere, skipped steps for building to a prod environ
 `npm t`
 
 `npm run coverage`
+
+
+## Thoughts and decisions
+
+No frameworks: rather show "vanilla knowledge" than relying on (nice) preimplemented features
+
+
+Building: ESBuild is fast and more straightforward than, say, Webpack
+
+
+State management: libraries like Redux would be overkill, Zustand is straightforward but a dependency nonetheless.
+`useReducer` seemed more flexible than mere useState
+
+
+App Config: main idea here was to
+1. expose an event-like interface to external world like `onAdded`, `onStatusUpdated`
+to allow other microfrontends to subscribe to changes that happen in the TODO list
+2. allow some customization, like passing custom classNames (kinda like Material UI does)
+Haven't implemented that as styling wasn't the focus, but I'd likely use Tailwind if it was
+
+Drawbacks: Adding configs requires me to implement the respective tests on the main component `TodoListApp`
+One can open the console in browser and see some events are logged.
+It seems "good enough" for this quick implementation, therefore no automated unit tests for things like "does onAdded gets called"
+
+
+Order of events:
+If adding or updating were async, likely Redux Sagas could solve that elegantly.
+Given the simplicity of this Todo List App, I'm just calling functions after the `dispatch` calls
+
+
+Desired:
+Wrap checkbox and todo description into a HTML label tag, so that clicking the text changes the checkbox too
+But originally I wanted to separate showing the description from editing the Status
+Guess creating a wrapper component whose children are ShowTodo and EditTodoStatus is cleaner than
+making EditTodoStatus als child of ShowTodo...
+
+
+Maybe a Button to Clear the Storage? Not required by challenge, so skipped implementing that
+
+
+Optionals:
+Linter, Prettier, Pre-commit hooks - Good when working in a team, but I'm alone so I'd rather not
+spend time setting those ^^
+
+
+Save and Load:
+Created two classes to open up the possibility of a Strategy Pattern.
+That is also the reason for the `async` function colouring on the Storage class
