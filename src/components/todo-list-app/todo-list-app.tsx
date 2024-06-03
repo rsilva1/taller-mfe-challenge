@@ -1,18 +1,33 @@
 import { AddTodo } from "@components/add-todo/add-todo"
 import { ListTodo } from "@components/list-todo/list-todo"
 import { TodoListAppProps } from "./todo-list-app.types"
-import { useCallback, useEffect, useReducer, useRef, useState } from "react"
+import { useCallback, useEffect, useReducer, useRef } from "react"
 import { ActionTypes, todoReducer, todosInitialState } from "reducers/todo.reducer"
 import { v4 as uuidv4 } from 'uuid';
 import { TodoStatus } from "@enums/todo-status.enum"
 import { TodosDispatcherContext } from "todos-dispatcher-context"
 import { TodosStorage } from "storage"
+import { ConfigContext, defaultConfig } from "config-context"
+import { AppConfig } from "@interfaces/app-config.interface"
+import { Todo } from "@interfaces/todo.interface"
+
+const validateConfig = (config: AppConfig) => {
+  let errors = [];
+  if (config.maxDescriptionLength < 10) {
+    errors.push('Max Description is too short');
+  }
+  return { errors };
+}
 
 export const TodoListApp: React.FC<TodoListAppProps> = ({ config }) => {
-  const [todos, dispatch] = useReducer(todoReducer, todosInitialState);
   const storageRef = useRef(new TodosStorage());
+  const [todos, dispatch] = useReducer(todoReducer, todosInitialState);
+  const appConfig = {...defaultConfig, ...config};
 
   const storage = storageRef.current;
+
+  // validate config
+  const { errors } = validateConfig(appConfig);
 
   useEffect(() => {
     let mounted = true
@@ -22,7 +37,7 @@ export const TodoListApp: React.FC<TodoListAppProps> = ({ config }) => {
         dispatch({ type: ActionTypes.Set, payload: todos })
       }
     }
-    loadFromStorage()
+    loadFromStorage().catch(err => appConfig.onError(err))
     return () => {
       mounted = false;
     }
@@ -33,23 +48,38 @@ export const TodoListApp: React.FC<TodoListAppProps> = ({ config }) => {
   }, [todos]);
 
   const onAdd = useCallback((description: string) => {
+    const newTodo: Todo = {
+      id: uuidv4(),
+      description,
+      status: TodoStatus.Incomplete,
+    }
     dispatch({
       type: ActionTypes.Add,
-      payload: {
-        id: uuidv4(),
-        description,
-        status: TodoStatus.Incomplete,
-      }
+      payload: newTodo,
     })
+    appConfig.onAdded(newTodo);
   }, [dispatch]);
 
-
+  if (errors.length) {
+    return (
+      <>
+      <p>Wrong settings</p>
+      <ul>
+        {errors.map(error => (
+          <li key={error}>{ error }</li>
+        ))}
+      </ul>
+      </>
+    );
+  }
   return (
-    <TodosDispatcherContext.Provider value={dispatch}>
-      <div>
-        <AddTodo onAdd={onAdd} />
-        <ListTodo todos={todos} />
-      </div>
-    </TodosDispatcherContext.Provider>
+    <ConfigContext.Provider value={{...defaultConfig, ...config}}>
+      <TodosDispatcherContext.Provider value={dispatch}>
+        <div>
+          <AddTodo onAdd={onAdd} />
+          <ListTodo todos={todos} />
+        </div>
+      </TodosDispatcherContext.Provider>
+    </ConfigContext.Provider>
   )
 }

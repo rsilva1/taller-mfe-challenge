@@ -6,6 +6,11 @@ root.render(
   <TodoListApp
     config={{
       showAddTodo: true,
+      maxDescriptionLength: 20,
+      onAdded: (todo: any) => console.log(`Added: ${JSON.stringify(todo)}`),
+      onStatusUpdated: (todo: any, oldStatus: string, newStatus: string) => {
+        console.log(`Updated status from ${oldStatus} to ${newStatus} of ${todo?.id} ${todo?.description}`)
+      },
     }}
   />
 )

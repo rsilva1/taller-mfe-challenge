@@ -3,11 +3,14 @@ import { EditTodoStatusProps } from "./edit-todo-status.types";
 import { useContext } from "react";
 import { TodosDispatcherContext } from "todos-dispatcher-context";
 import { ActionTypes } from "reducers/todo.reducer";
+import { ConfigContext } from "config-context";
 
 export const EditTodoStatus: React.FC<EditTodoStatusProps> = ({ todo }) => {
   const dispatch = useContext(TodosDispatcherContext);
+  const { onStatusUpdated } = useContext(ConfigContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const oldStatus = todo.status;
     const newStatus = e.target.checked
       ? TodoStatus.Completed
       : TodoStatus.Incomplete;
@@ -18,6 +21,7 @@ export const EditTodoStatus: React.FC<EditTodoStatusProps> = ({ todo }) => {
         status: newStatus,
       },
     });
+    onStatusUpdated(todo, oldStatus, newStatus)
   }
 
   return (
