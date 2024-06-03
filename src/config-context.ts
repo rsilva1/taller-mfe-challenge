@@ -6,7 +6,12 @@ export const defaultConfig: AppConfig = {
   maxDescriptionLength: 20,
   onAdded: () => {},
   onStatusUpdated: () => {},
-  onError: console.error,
+  onError: (err: Error, info?: string) => {
+    if (info) {
+      console.log('Error: ', info)
+    }
+    console.error(err)
+  },
 }
 
 export const ConfigContext = createContext(defaultConfig);

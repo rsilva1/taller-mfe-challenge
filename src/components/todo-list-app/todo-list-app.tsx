@@ -37,14 +37,14 @@ export const TodoListApp: React.FC<TodoListAppProps> = ({ config }) => {
         dispatch({ type: ActionTypes.Set, payload: todos })
       }
     }
-    loadFromStorage().catch(err => appConfig.onError(err))
+    loadFromStorage().catch(err => appConfig.onError(err, 'failed to load'))
     return () => {
       mounted = false;
     }
   }, []);
 
   useEffect(() => {
-    storage.save(todos);
+    storage.save(todos).catch(err => appConfig.onError(err, 'failed to save'));
   }, [todos]);
 
   const onAdd = useCallback((description: string) => {
