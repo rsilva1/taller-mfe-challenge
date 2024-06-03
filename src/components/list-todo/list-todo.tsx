@@ -9,8 +9,8 @@ export const ListTodo: React.FC<ListTodoProps> = ({ todos }) => {
   }
   return (
     <ul>
-      {todos.map((todo, index) => (
-        <li key={index}>
+      {todos.map((todo) => (
+        <li key={todo.id}>
           <ShowTodo todo={todo} />
         </li>
       ))}
