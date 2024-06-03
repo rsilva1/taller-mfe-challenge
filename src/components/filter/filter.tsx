@@ -6,7 +6,7 @@ export const Filter: React.FC<FilterProps> = ({ filterBy, setFilterBy }) => {
   const statuses: {name: string; status: TodoStatus | null}[] = [
     { name: 'All', status: null },
     { name: 'Completed', status: TodoStatus.Completed },
-    { name: 'Pending', status: TodoStatus.Incomplete },
+    { name: 'Active', status: TodoStatus.Incomplete },
   ]
   return (
     <div className="container">

@@ -23,7 +23,7 @@ describe('Filter', () => {
     expect(completedButton).toBeInTheDocument()
     expect(completedButton).not.toBeDisabled()
 
-    const pendingButton = screen.getByRole('button', { name: 'Pending' })
+    const pendingButton = screen.getByRole('button', { name: 'Active' })
     expect(pendingButton).toBeInTheDocument()
     expect(pendingButton).not.toBeDisabled()
   })
@@ -54,11 +54,11 @@ describe('Filter', () => {
     expect(setFilterBy).toHaveBeenCalledWith(TodoStatus.Completed)
   })
 
-  test('sets filter to completed when user clicks Pending button', async () => {
+  test('sets filter to completed when user clicks Active button', async () => {
     const user = userEvent.setup()
 
     const { setFilterBy } = renderFilter()
-    const pendingButton = screen.getByRole('button', { name: 'Pending' })
+    const pendingButton = screen.getByRole('button', { name: 'Active' })
     expect(pendingButton).toBeInTheDocument()
     expect(pendingButton).not.toBeDisabled()
     
