@@ -82,3 +82,12 @@ spend time setting those ^^
 Created two classes to open up the possibility of a Strategy Pattern.
 That is also the reason for the `async` function colouring on the Storage class
 The strategy could then be passed as a config prop in `AppConfig`
+
+
+**Edit Todo Status**
+Tested manually after moving the Update from props to useContext, thus skipped the automated tests instead of rewriting.
+
+But...if I were to rewrite them, I'd create a custom render with the Context Wrapper and mock functions (I did that in `add-todo.test.tsx` and `local-storage.test.ts`)
+then, in the test check if the mocks are called appropriately
+Or alternatively, in a integration test on `todo-list-app.tsx`
+
