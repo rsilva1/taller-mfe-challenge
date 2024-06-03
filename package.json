@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "cd dist && ln -s ./../src/index.html index.html && cd ../ && node esbuild.dev.mjs",
+    "dev": "cd dist && ln -sf ./../src/index.html index.html && cd ../ && node esbuild.dev.mjs",
     "build": "echo \"build command pending\"",
     "test": "vitest",
     "coverage": "vitest run --coverage"
@@ -10,6 +10,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
@@ -18,6 +19,7 @@
     "esbuild": "0.21.4",
     "jsdom": "^24.1.0",
     "typescript": "^5.4.5",
+    "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0"
   }
 }

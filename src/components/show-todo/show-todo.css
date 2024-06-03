@@ -1,0 +1,9 @@
+.status-completed {
+  background-color: #6699FF;
+  text-decoration: line-through;
+}
+
+.status.incomplete {
+  background-color: #ECECEC;
+  text-decoration: none;
+}
